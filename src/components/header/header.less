@@ -1,0 +1,46 @@
+.header {
+  height: 80px;
+  background-color: #fff;
+  .header-top {
+    padding-right: 20px;
+    height: 40px;
+    text-align: right;
+    line-height: 40px;
+    border-bottom: 1px solid #1da57a;
+    span {
+      margin-right: 10px;
+    }
+  }
+  .header-bottom {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    .header-bottom-left {
+      position: relative;
+      width: 25%;
+      text-align: center;
+      font-size: 20px;
+      &::after { // 伪元素
+        content: '';
+        position: absolute;
+        top: 30px;
+        right: 50%;
+        transform: translateX(50%);
+        border-top: 20px solid white;
+        border-right: 20px solid transparent;
+        border-bottom: 20px solid transparent;
+        border-left: 20px solid transparent;
+      }
+    }
+    .header-bottom-right {
+      padding-right: 20px;
+      width: 75%;
+      text-align: right;
+      img {
+        width: 30px;
+        height: 20px;
+        margin: 0 15px;
+      }
+    }
+  }
+}
