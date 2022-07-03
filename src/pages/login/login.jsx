@@ -1,10 +1,10 @@
 import React, {Component, createRef} from 'react';
 import {Redirect} from "react-router-dom";
+import {connect} from "react-redux";
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Checkbox, message } from 'antd';
-import { reqLogin } from'../../api/index'
-import memoryUtils from "../../utils/memoryUtils"
-import storageUtils from "../../utils/storageUtils";
+import { Button, Form, Input, Checkbox } from 'antd';
+
+import {login} from "../../redux/actions";
 
 import logo from '../../assets/images/logo.png'
 import './login.less'
@@ -19,24 +19,26 @@ class Login extends Component {
 	// antd默认取消了跳转行为
 	handleLogin = async (values) => {
 		const { username, password } = values;
-		const result = await reqLogin(username, password); // 获取响应体数据
-		const user = result.data;
-		if (result.status === 0) { // 登录成功
-			message.success('登录成功');
-			// 跳转到主页
-			// this.props.history.replace('/');
-			window.location.reload(); // 防止路由导航失效，强制页面刷新
-			// 保存账号信息
-			// memoryUtils.user = user;
-			storageUtils.saveUser(user);
-		} else { // 失败
-			message.error('登录失败：' + result.msg);
-		}
+		// 调用redux的异步action creator，并更新状态
+		this.props.login(username, password);
+		// const result = await reqLogin(username, password); // 获取响应体数据
+		// const user = result.data;
+		// if (result.status === 0) { // 登录成功
+		// 	message.success('登录成功');
+		// 	// 跳转到主页
+		// 	// this.props.history.replace('/');
+		// 	window.location.reload(); // 防止路由导航失效，强制页面刷新
+		// 	// 保存账号信息
+		// 	// memoryUtils.user = user;
+		// 	storageUtils.saveUser(user);
+		// } else { // 失败
+		// 	message.error('登录失败：' + result.msg);
+		// }
 	}
 	
 	render() {
-		// 如果用户里面已经登录，跳转到主页
-		const user = memoryUtils.user;
+		// 如果用户里面已经登录，跳转到主页（从redux中取）
+		const user = this.props.user;
 		if (user && user._id) {
 			return <Redirect to='/'/>;
 		}
@@ -109,4 +111,7 @@ class Login extends Component {
 	}
 }
 
-export default Login;
+export default connect(
+	state => ({user: state.user}),
+	{login}
+)(Login);

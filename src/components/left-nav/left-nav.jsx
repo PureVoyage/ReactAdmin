@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Link, withRouter} from "react-router-dom";
 import {
 	HomeOutlined,
@@ -13,8 +14,10 @@ import {
 	PieChartOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
+import {connect} from "react-redux";
 
 import menuList from "../../config/menuConfig";
+import {setHeadTitle} from "../../redux/actions";
 
 import './left-nav.less'
 import logo from '../../assets/images/logo.png'
@@ -38,11 +41,11 @@ const items = [
 	]),
 	getItem(<Link to='/user'><span>用户管理</span></Link>, '/user', <UserOutlined />),
 	getItem(<Link to='/role'><span>角色管理</span></Link>, '/role', <SafetyOutlined />),
-	getItem(<span>图形图表</span>, 'sub2', <AreaChartOutlined />, [
-		getItem(<Link to='/charts/bar'><span>柱状图</span></Link>, '/charts/bar', <BarChartOutlined />),
-		getItem(<Link to='/charts/line'><span>折线图</span></Link>, '/charts/line', <LineChartOutlined />),
-		getItem(<Link to='/charts/pie'><span>饼状图</span></Link>, '/charts/pie', <PieChartOutlined />),
-	]),
+	// getItem(<span>图形图表</span>, 'sub2', <AreaChartOutlined />, [
+	// 	getItem(<Link to='/charts/bar'><span>柱状图</span></Link>, '/charts/bar', <BarChartOutlined />),
+	// 	getItem(<Link to='/charts/line'><span>折线图</span></Link>, '/charts/line', <LineChartOutlined />),
+	// 	getItem(<Link to='/charts/pie'><span>饼状图</span></Link>, '/charts/pie', <PieChartOutlined />),
+	// ]),
 ];
 
 
@@ -60,7 +63,7 @@ class LeftNav extends React.Component {
 		this.openKeys = [];
 	}
 	
-	changeMenu = () => {
+	changeMenu = (item) => {
 		// 检查当前子路由是否在别人的children属性中
 		const openKeys = [];
 		function check(item, target) {
@@ -110,4 +113,11 @@ class LeftNav extends React.Component {
 	}
 }
 
-export default withRouter(LeftNav);
+LeftNav.propTypes = {
+	setHeadTitle: PropTypes.func
+}
+
+export default connect(
+	state => ({}),
+	{setHeadTitle}
+)(withRouter(LeftNav));

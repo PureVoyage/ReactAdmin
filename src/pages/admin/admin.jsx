@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from "react-redux";
 import {Redirect, Route, Switch} from "react-router-dom";
 import { Layout } from 'antd';
 
@@ -13,13 +14,12 @@ import Product from "../product/product";
 import Bar from "../charts/bar";
 import Line from "../charts/line";
 import Pie from "../charts/pie";
-import memoryUtils from "../../utils/memoryUtils";
 
 const { Footer, Sider, Content } = Layout;
 
 class Admin extends Component {
 	render() {
-		const { user } = memoryUtils;
+		const user = this.props.user;
 		// 未登录，跳转到登录界面
 		if (!user || !user._id) {
 			return <Redirect to='/login'/>;
@@ -51,4 +51,7 @@ class Admin extends Component {
 	}
 }
 
-export default Admin;
+export default connect(
+	state => ({user: state.user}),
+	{}
+)(Admin);
